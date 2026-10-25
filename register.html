@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - QuickDesk</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <span>🎫</span> QuickDesk
+            </a>
+            <ul class="nav-menu" id="nav-user-area">
+                <!-- Dynamically populated -->
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Auth Container -->
+    <div class="auth-wrapper">
+        <div class="auth-card" style="max-width: 480px;">
+            <div class="auth-header">
+                <h2>Create an Account</h2>
+                <p>Register as a new user to submit support requests</p>
+            </div>
+
+            <!-- Alert Notification -->
+            <div id="register-alert" class="alert"></div>
+
+            <!-- Register Form -->
+            <form id="register-form" novalidate>
+                <div class="form-group">
+                    <label class="form-label" for="reg-name">Full Name *</label>
+                    <input type="text" id="reg-name" class="form-control" placeholder="e.g. Michael Scott" required>
+                    <div id="name-error" class="error-text"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="reg-email">Email Address *</label>
+                    <input type="email" id="reg-email" class="form-control" placeholder="name@example.com" required>
+                    <div id="email-error" class="error-text"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="reg-phone">Phone Number (Optional)</label>
+                    <input type="tel" id="reg-phone" class="form-control" placeholder="+1 555-0199">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="reg-password">Password *</label>
+                    <input type="password" id="reg-password" class="form-control" placeholder="At least 6 characters" required>
+                    <div id="password-error" class="error-text"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="reg-confirm-password">Confirm Password *</label>
+                    <input type="password" id="reg-confirm-password" class="form-control" placeholder="Re-type password" required>
+                    <div id="confirm-password-error" class="error-text"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block" style="padding: 10px; margin-top: 14px;">
+                    Register Account
+                </button>
+            </form>
+
+            <div class="auth-links">
+                Already have an account? <a href="login.html">Log In here</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>QuickDesk &copy; 2026 &bull; Frontend-Only Web Application</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        redirectIfLoggedIn();
+
+        const form = document.getElementById('register-form');
+        const nameInput = document.getElementById('reg-name');
+        const emailInput = document.getElementById('reg-email');
+        const phoneInput = document.getElementById('reg-phone');
+        const passInput = document.getElementById('reg-password');
+        const confirmPassInput = document.getElementById('reg-confirm-password');
+
+        const nameError = document.getElementById('name-error');
+        const emailError = document.getElementById('email-error');
+        const passError = document.getElementById('password-error');
+        const confirmError = document.getElementById('confirm-password-error');
+        const alertBox = document.getElementById('register-alert');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Clear errors
+            clearError(nameInput, nameError);
+            clearError(emailInput, emailError);
+            clearError(passInput, passError);
+            clearError(confirmPassInput, confirmError);
+            alertBox.style.display = 'none';
+
+            let isValid = true;
+            const fullName = nameInput.value.trim();
+            const email = emailInput.value.trim().toLowerCase();
+            const phone = phoneInput.value.trim();
+            const password = passInput.value;
+            const confirmPassword = confirmPassInput.value;
+
+            // 1. Full Name check
+            if (!fullName) {
+                showError(nameInput, nameError, 'Full name is required.');
+                isValid = false;
+            } else if (fullName.length < 2) {
+                showError(nameInput, nameError, 'Name must be at least 2 characters.');
+                isValid = false;
+            }
+
+            // 2. Email check
+            if (!email) {
+                showError(emailInput, emailError, 'Email address is required.');
+                isValid = false;
+            } else if (!isValidEmail(email)) {
+                showError(emailInput, emailError, 'Please enter a valid email format.');
+                isValid = false;
+            }
+
+            // 3. Password check
+            if (!password) {
+                showError(passInput, passError, 'Password is required.');
+                isValid = false;
+            } else if (!isValidPassword(password)) {
+                showError(passInput, passError, 'Password must be at least 6 characters long.');
+                isValid = false;
+            }
+
+            // 4. Confirm Password check
+            if (!confirmPassword) {
+                showError(confirmPassInput, confirmError, 'Please confirm your password.');
+                isValid = false;
+            } else if (password !== confirmPassword) {
+                showError(confirmPassInput, confirmError, 'Passwords do not match.');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // 5. Check if user already exists
+            const users = getUsers();
+            const existingUser = users.find(u => u.email.toLowerCase() === email);
+
+            if (existingUser) {
+                showError(emailInput, emailError, 'An account with this email already exists.');
+                return;
+            }
+
+            // 6. Create and save new user (defaults to 'User' role)
+            const newUser = {
+                id: 'usr_' + Date.now(),
+                fullName: fullName,
+                email: email,
+                password: password,
+                role: 'User',
+                phone: phone || '',
+                bio: 'Regular customer',
+                createdAt: new Date().toISOString().slice(0, 10)
+            };
+
+            users.push(newUser);
+            saveUsers(users);
+
+            // Auto-login and notify
+            setCurrentUser(newUser);
+
+            alertBox.className = 'alert alert-success';
+            alertBox.textContent = 'Account created successfully! Redirecting to dashboard...';
+            alertBox.style.display = 'block';
+
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1200);
+        });
+    </script>
+</body>
+</html>

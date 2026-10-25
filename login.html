@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - QuickDesk</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <span>🎫</span> QuickDesk
+            </a>
+            <ul class="nav-menu" id="nav-user-area">
+                <!-- Dynamically populated -->
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Auth Container -->
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>Welcome Back</h2>
+                <p>Log in to access your QuickDesk portal</p>
+            </div>
+
+            <!-- Demo Quick Fill Box -->
+            <div class="demo-accounts-box">
+                <h4>🚀 Demo Test Accounts (Click to Fill):</h4>
+                <div class="demo-buttons-group">
+                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="fillDemo('admin@example.com', 'Admin@123')">
+                        Admin
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="fillDemo('agent@example.com', 'Agent@123')">
+                        Agent
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="fillDemo('user@example.com', 'User@123')">
+                        User
+                    </button>
+                </div>
+            </div>
+
+            <!-- Alert Notification -->
+            <div id="login-alert" class="alert alert-danger"></div>
+
+            <!-- Login Form -->
+            <form id="login-form" novalidate>
+                <div class="form-group">
+                    <label class="form-label" for="login-email">Email Address</label>
+                    <input type="email" id="login-email" class="form-control" placeholder="name@example.com" required>
+                    <div id="email-error" class="error-text"></div>
+                </div>
+
+                <div class="form-group">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <label class="form-label" for="login-password" style="margin-bottom: 0;">Password</label>
+                        <a href="forgot-password.html" style="font-size: 0.85rem; color: var(--primary-color); text-decoration: none;">
+                            Forgot Password?
+                        </a>
+                    </div>
+                    <input type="password" id="login-password" class="form-control" placeholder="Enter your password" required>
+                    <div id="password-error" class="error-text"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block" style="padding: 10px; margin-top: 10px;">
+                    Log In
+                </button>
+            </form>
+
+            <div class="auth-links">
+                Don't have an account? <a href="register.html">Sign Up here</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>QuickDesk &copy; 2026 &bull; Frontend-Only Web Application</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Redirect if already logged in
+        redirectIfLoggedIn();
+
+        // Helper to fill test credentials
+        function fillDemo(email, pass) {
+            document.getElementById('login-email').value = email;
+            document.getElementById('login-password').value = pass;
+            clearValidation();
+        }
+
+        // Form elements
+        const form = document.getElementById('login-form');
+        const emailInput = document.getElementById('login-email');
+        const passInput = document.getElementById('login-password');
+        const emailError = document.getElementById('email-error');
+        const passError = document.getElementById('password-error');
+        const alertBox = document.getElementById('login-alert');
+
+        function clearValidation() {
+            clearError(emailInput, emailError);
+            clearError(passInput, passError);
+            alertBox.style.display = 'none';
+        }
+
+        // Form Submit Handler
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            clearValidation();
+
+            const email = emailInput.value.trim();
+            const password = passInput.value;
+            let isValid = true;
+
+            // 1. Validate Email
+            if (!email) {
+                showError(emailInput, emailError, 'Email address is required.');
+                isValid = false;
+            } else if (!isValidEmail(email)) {
+                showError(emailInput, emailError, 'Please enter a valid email format.');
+                isValid = false;
+            }
+
+            // 2. Validate Password
+            if (!password) {
+                showError(passInput, passError, 'Password is required.');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // 3. Authenticate against localStorage database
+            const users = getUsers();
+            const foundUser = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+
+            if (!foundUser || foundUser.password !== password) {
+                alertBox.textContent = 'Invalid email or password. Please try again.';
+                alertBox.style.display = 'block';
+                return;
+            }
+
+            // Success: Store user session and redirect
+            setCurrentUser(foundUser);
+            window.location.href = 'dashboard.html';
+        });
+    </script>
+</body>
+</html>

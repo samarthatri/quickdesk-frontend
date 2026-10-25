@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated Test Suite - QuickDesk</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .test-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+        }
+        .test-card.passed {
+            border-left: 5px solid var(--success-color);
+        }
+        .test-card.failed {
+            border-left: 5px solid var(--danger-color);
+            background-color: #fff8f8;
+        }
+        .test-badge-pass {
+            background-color: #d1e7dd;
+            color: #0f5132;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        .test-badge-fail {
+            background-color: #f8d7da;
+            color: #842029;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <span>🎫</span> QuickDesk
+            </a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="login.html">Demo App</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+            <div>
+                <h1 style="font-size: 1.8rem; margin-bottom: 4px;">Automated Test Suite 🧪</h1>
+                <p style="color: var(--secondary-color); font-size: 0.95rem;">
+                    Verifying Form Validation, Authentication, RBAC, CRUD, Forgot Password &amp; Profile Updates.
+                </p>
+            </div>
+            <div>
+                <button class="btn btn-primary" onclick="executeAndRenderTests()">
+                    ▶️ Run All Tests
+                </button>
+            </div>
+        </div>
+
+        <!-- Summary Stats Card -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <p>Total Tests</p>
+                    <h3 id="test-total-count">0</h3>
+                </div>
+                <div style="font-size: 2rem;">📊</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <p>Passed</p>
+                    <h3 id="test-pass-count" style="color: var(--success-color);">0</h3>
+                </div>
+                <div style="font-size: 2rem;">✅</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <p>Failed</p>
+                    <h3 id="test-fail-count" style="color: var(--danger-color);">0</h3>
+                </div>
+                <div style="font-size: 2rem;">❌</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <p>Success Rate</p>
+                    <h3 id="test-rate">100%</h3>
+                </div>
+                <div style="font-size: 2rem;">🎯</div>
+            </div>
+        </div>
+
+        <!-- Results Container -->
+        <div class="card">
+            <h3 class="card-title">Test Execution Logs</h3>
+            <div id="test-logs-list">
+                <p style="color: var(--secondary-color); text-align: center; padding: 20px;">
+                    Running tests automatically...
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>QuickDesk &copy; 2026 &bull; Automated Frontend Test Runner</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/tests.js"></script>
+    <script>
+        function executeAndRenderTests() {
+            const results = runAllTests();
+
+            const total = results.length;
+            const passed = results.filter(r => r.passed).length;
+            const failed = total - passed;
+            const rate = total > 0 ? Math.round((passed / total) * 100) : 0;
+
+            document.getElementById('test-total-count').textContent = total;
+            document.getElementById('test-pass-count').textContent = passed;
+            document.getElementById('test-fail-count').textContent = failed;
+            document.getElementById('test-rate').textContent = rate + '%';
+
+            const logsList = document.getElementById('test-logs-list');
+            logsList.innerHTML = '';
+
+            results.forEach((res, index) => {
+                const item = document.createElement('div');
+                item.className = 'test-card ' + (res.passed ? 'passed' : 'failed');
+
+                item.innerHTML = `
+                    <div>
+                        <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 2px;">
+                            ${index + 1}. ${res.name}
+                        </div>
+                        <div style="color: #6c757d; font-size: 0.85rem;">
+                            ${res.details || ''}
+                        </div>
+                    </div>
+                    <div>
+                        <span class="${res.passed ? 'test-badge-pass' : 'test-badge-fail'}">
+                            ${res.passed ? 'PASSED' : 'FAILED'}
+                        </span>
+                    </div>
+                `;
+
+                logsList.appendChild(item);
+            });
+        }
+
+        // Auto execute on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            executeAndRenderTests();
+        });
+    </script>
+</body>
+</html>

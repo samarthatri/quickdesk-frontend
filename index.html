@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickDesk - Support Ticket & Issue Tracker</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <span>🎫</span> QuickDesk
+            </a>
+            <ul class="nav-menu" id="nav-user-area">
+                <!-- Dynamically populated by js/auth.js -->
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero / Introduction Section -->
+    <div class="container" style="padding-top: 40px; padding-bottom: 40px;">
+        <div class="card" style="text-align: center; padding: 40px 20px;">
+            <h1 style="font-size: 2.2rem; color: var(--dark-color); margin-bottom: 12px;">
+                Support Ticket &amp; Issue Management System
+            </h1>
+            <p style="font-size: 1.1rem; color: var(--secondary-color); max-width: 680px; margin: 0 auto 24px auto;">
+                A clean, frontend-only web application built with Vanilla HTML5, CSS3, and JavaScript.
+                Powered by a mock database in <code>localStorage</code> with complete CRUD and Role-Based Access Control (RBAC).
+            </p>
+            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                <a href="login.html" class="btn btn-primary" style="padding: 10px 24px;">Launch Demo App &rarr;</a>
+                <a href="test.html" class="btn btn-outline-primary" style="padding: 10px 24px;">Run Test Suite 🧪</a>
+                <button onclick="resetDemoDatabase(); alert('Local storage reset to default mock data!'); location.reload();" class="btn btn-secondary" style="padding: 10px 24px;">
+                    Reset Mock Data 🔄
+                </button>
+            </div>
+        </div>
+
+        <!-- Role Showcase & Features -->
+        <h2 style="margin: 30px 0 16px 0; font-size: 1.5rem;">Explore By User Roles (RBAC)</h2>
+        <div class="stats-grid">
+            <div class="card" style="margin-bottom: 0;">
+                <div style="margin-bottom: 10px;">
+                    <span class="user-badge badge-admin">Admin Role</span>
+                </div>
+                <h3 style="margin-bottom: 8px;">Alex Admin</h3>
+                <p style="color: var(--secondary-color); font-size: 0.9rem; margin-bottom: 12px;">
+                    <code>admin@example.com</code><br>
+                    <strong>Password:</strong> <code>Admin@123</code>
+                </p>
+                <ul style="font-size: 0.88rem; padding-left: 18px; margin-bottom: 16px; color: #555;">
+                    <li>Full CRUD on all tickets</li>
+                    <li>Reassign tickets to Agents</li>
+                    <li>Access to User Lists &amp; RBAC</li>
+                    <li>Add/delete user accounts</li>
+                </ul>
+                <a href="login.html" class="btn btn-sm btn-primary btn-block">Login as Admin</a>
+            </div>
+
+            <div class="card" style="margin-bottom: 0;">
+                <div style="margin-bottom: 10px;">
+                    <span class="user-badge badge-agent">Agent Role</span>
+                </div>
+                <h3 style="margin-bottom: 8px;">Sarah Agent</h3>
+                <p style="color: var(--secondary-color); font-size: 0.9rem; margin-bottom: 12px;">
+                    <code>agent@example.com</code><br>
+                    <strong>Password:</strong> <code>Agent@123</code>
+                </p>
+                <ul style="font-size: 0.88rem; padding-left: 18px; margin-bottom: 16px; color: #555;">
+                    <li>View all tickets</li>
+                    <li>Change ticket statuses</li>
+                    <li>Add resolution notes</li>
+                    <li>Profile update access</li>
+                </ul>
+                <a href="login.html" class="btn btn-sm btn-info btn-block">Login as Agent</a>
+            </div>
+
+            <div class="card" style="margin-bottom: 0;">
+                <div style="margin-bottom: 10px;">
+                    <span class="user-badge badge-user">User Role</span>
+                </div>
+                <h3 style="margin-bottom: 8px;">John Customer</h3>
+                <p style="color: var(--secondary-color); font-size: 0.9rem; margin-bottom: 12px;">
+                    <code>user@example.com</code><br>
+                    <strong>Password:</strong> <code>User@123</code>
+                </p>
+                <ul style="font-size: 0.88rem; padding-left: 18px; margin-bottom: 16px; color: #555;">
+                    <li>Submit new tickets (Create)</li>
+                    <li>View personal tickets (Read)</li>
+                    <li>Edit open tickets (Update)</li>
+                    <li>Cancel open tickets (Delete)</li>
+                </ul>
+                <a href="login.html" class="btn btn-sm btn-outline-primary btn-block">Login as User</a>
+            </div>
+        </div>
+
+        <!-- Technical Checklist Covered -->
+        <div class="card" style="margin-top: 30px;">
+            <h3 class="card-title">Technical Capabilities Implemented</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; font-size: 0.95rem;">
+                <div>
+                    <strong>✅ CRUD Operations:</strong>
+                    <p style="color: #666; font-size: 0.88rem;">Create, Read, Update, and Delete tickets with modal popups and real-time state synchronization.</p>
+                </div>
+                <div>
+                    <strong>✅ Login &amp; Register:</strong>
+                    <p style="color: #666; font-size: 0.88rem;">Client-side authentication with session persistence in <code>localStorage</code>.</p>
+                </div>
+                <div>
+                    <strong>✅ Frontend Form Validation:</strong>
+                    <p style="color: #666; font-size: 0.88rem;">Email regex checking, minimum password lengths, confirmation matching, and field-level red error styling.</p>
+                </div>
+                <div>
+                    <strong>✅ Forgot Password:</strong>
+                    <p style="color: #666; font-size: 0.88rem;">2-step recovery simulation checking existing records and securely updating credentials.</p>
+                </div>
+                <div>
+                    <strong>✅ Profile Management:</strong>
+                    <p style="color: #666; font-size: 0.88rem;">View and edit personal details (Name, Bio, Phone) plus secure password change verification.</p>
+                </div>
+                <div>
+                    <strong>✅ User Lists &amp; RBAC:</strong>
+                    <p style="color: #666; font-size: 0.88rem;">Admin-only user directory with role assignment and self-protection deletion guards.</p>
+                </div>
+                <div>
+                    <strong>✅ Responsive Application:</strong>
+                    <p style="color: #666; font-size: 0.88rem;">Mobile-friendly CSS with responsive navigation, flexbox filters, and responsive tables.</p>
+                </div>
+                <div>
+                    <strong>✅ Automated Test Cases:</strong>
+                    <p style="color: #666; font-size: 0.88rem;">Built-in browser test runner with 14 automated unit tests for validation, auth, and CRUD.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>QuickDesk &copy; 2026 &bull; Frontend-Only Web Application &bull; Built with HTML5, CSS3, JavaScript</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
