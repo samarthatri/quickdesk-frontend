@@ -3,6 +3,9 @@
 > **A Beginner-Friendly, Responsive Frontend-Only Web Application**  
 > Built with pure **HTML5, CSS3, and JavaScript (ES6)**. No backend server or Node.js build tools required!
 
+🌐 **Live Demo on Vercel:** [https://supportdesk-frontend-dusky.vercel.app](https://supportdesk-frontend-dusky.vercel.app)  
+📦 **GitHub Repository:** [https://github.com/samarthatri/quickdesk-frontend](https://github.com/samarthatri/quickdesk-frontend)
+
 ---
 
 ## 📖 Project Overview
