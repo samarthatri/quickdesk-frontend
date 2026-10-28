@@ -1,0 +1,21 @@
+{
+  "name": "quickdesk-frontend",
+  "version": "1.0.0",
+  "description": "Beginner-friendly responsive frontend-only support ticket system with mock localStorage database, RBAC, CRUD, Auth, and test suite.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test-node.js"
+  },
+  "keywords": [
+    "frontend",
+    "vanilla-js",
+    "crud",
+    "rbac",
+    "localstorage",
+    "html5",
+    "css3"
+  ],
+  "author": "QuickDesk Team",
+  "license": "MIT"
+}
