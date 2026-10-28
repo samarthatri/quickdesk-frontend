@@ -116,23 +116,28 @@ supportdesk-frontend/
 
 ## 💻 How to Run Locally
 
-Because this is a pure frontend application, **no compilation or installation is necessary**!
+Because this is a pure frontend application, **no complicated build or compilation step is required**!
 
-### Option 1: Direct Double Click
-Simply navigate to the project directory on your computer and double-click `index.html` to open it in Google Chrome, Microsoft Edge, Firefox, or Safari.
+### Option 1: Using Node / npm (Fastest & Zero Setup)
+```bash
+# Start local server at http://localhost:3000
+npm start
+# (or: node server.js)
+```
 
-### Option 2: Using VS Code Live Server (Recommended)
+### Option 2: Direct Double Click
+Simply open the project folder in your file explorer and double-click `index.html` to run in any browser (Chrome, Edge, Firefox, Safari).
+
+### Option 3: Using VS Code Live Server
 1. Open Visual Studio Code.
-2. Install the **Live Server** extension (by Ritwick Dey).
+2. Install the **Live Server** extension.
 3. Right-click on `index.html` and select **"Open with Live Server"**.
 
-### Option 3: Using Python Simple Server
-Open your terminal in the project directory and run:
+### Option 4: Using Python Simple Server
 ```bash
-# Python 3
 python -m http.server 8000
 ```
-Then visit `http://localhost:8000` in your web browser.
+Then visit `http://localhost:8000`.
 
 ---
 
@@ -189,11 +194,20 @@ git push -u origin main
 
 ## 🧪 Running the Tests
 
-To verify that all functions work correctly:
+You can run the automated tests in **two easy ways**:
+
+### Method A: In Your Terminal (Fastest)
+```bash
+npm test
+# (or: node test-node.js)
+```
+Outputs colored test results directly in your command line!
+
+### Method B: In Your Web Browser
 1. Open the project in your browser.
-2. Click on **"Run Test Suite 🧪"** on the home page or open `test.html`.
-3. Click the **"Run All Tests"** button.
-4. You will see a complete visual breakdown with 15/15 tests passing!
+2. Click on **"Run Test Suite 🧪"** on the home page or navigate to `test.html`.
+3. Click the **"▶️ Run All Tests"** button.
+4. You will see a clean visual card breakdown with all 16/16 tests passing!
 
 ---
 
